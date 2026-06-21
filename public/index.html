@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIRA RCA Agent</title>
+    <!-- Use Inter font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob shape1"></div>
+        <div class="blob shape2"></div>
+        <div class="blob shape3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fa-brands fa-jira"></i>
+                <h1>Bug Verification & RCA Agent</h1>
+            </div>
+            <p>Automated Defect Analysis and Quality Enforcement</p>
+            <button id="open-settings-btn" class="settings-btn"><i class="fa-solid fa-gear"></i> Settings</button>
+        </header>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h2><i class="fa-solid fa-sliders"></i> Jira Configuration</h2>
+                    <span id="close-settings-btn" class="close-btn">&times;</span>
+                </div>
+                <form id="settings-form">
+                    <div class="input-group">
+                        <i class="fa-solid fa-globe"></i>
+                        <input type="text" id="jira-domain" placeholder="Jira Domain (e.g. https://domain.atlassian.net)" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="text" id="jira-email" placeholder="Jira Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-key"></i>
+                        <input type="password" id="jira-token" placeholder="Jira API Token" required>
+                    </div>
+                    
+                    <div id="connection-status" class="status-msg hidden"></div>
+                    
+                    <button type="submit" id="save-jira-btn" class="primary-btn">
+                        <span>Save Settings</span>
+                        <i class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <main>
+            <div class="glass-panel input-section">
+                <h2>Analyze a Ticket</h2>
+                <form id="analyze-form">
+                    <div class="input-group">
+                        <i class="fa-solid fa-ticket"></i>
+                        <input type="text" id="ticket-id" placeholder="Enter JIRA Ticket ID (e.g., QA-456)" required>
+                    </div>
+                    <button type="submit" id="analyze-btn">
+                        <span>Analyze Details</span>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                    <!-- Progress Container -->
+                    <div id="loader" class="loader-container hidden">
+                        <div class="spinner"></div>
+                        <p id="loading-text">Fetching JIRA ticket data...</p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Enhanced Response Container -->
+            <div id="results-container" class="glass-panel hidden">
+                <div class="results-header">
+                    <h2>Analysis Report</h2>
+                    <span id="ticket-title-display" class="badge ticket-badge">QA-123</span>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Column 1: Bug info & Verification -->
+                    <div class="col">
+                        <div class="card section-card">
+                            <h3><i class="fa-solid fa-circle-info"></i> Ticket Information</h3>
+                            <ul>
+                                <li><strong>Summary:</strong> <span id="res-summary">...</span></li>
+                                <li><strong>Status:</strong> <span id="res-status" class="badge">...</span></li>
+                                <li><strong>Priority:</strong> <span id="res-priority" class="badge priority-badge">...</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="card section-card">
+                            <h3><i class="fa-solid fa-shield-check"></i> Verification Result</h3>
+                            <ul>
+                                <li><strong>Bug Valid:</strong> <span id="res-valid">...</span></li>
+                                <li><strong>Confidence:</strong> <span id="res-confidence" class="confidence-text">...</span></li>
+                                <li><strong>Missing Info:</strong> <span id="res-missing">...</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: RCA generation -->
+                    <div class="col">
+                        <div class="card section-card highlight-card">
+                            <h3><i class="fa-solid fa-microscope"></i> Root Cause Analysis</h3>
+                            <div class="rca-content">
+                                <div class="rca-item">
+                                    <label>Category</label>
+                                    <div id="res-rca-category" class="rca-value category-badge">...</div>
+                                </div>
+                                <div class="rca-item">
+                                    <label>Root Cause</label>
+                                    <p id="res-rca-rootcause">...</p>
+                                </div>
+                                <div class="rca-item">
+                                    <label>Impact</label>
+                                    <p id="res-rca-impact">...</p>
+                                </div>
+                                <div class="rca-item">
+                                    <label>Corrective Action</label>
+                                    <p id="res-rca-corrective">...</p>
+                                </div>
+                                <div class="rca-item">
+                                    <label>Preventive Action</label>
+                                    <p id="res-rca-preventive">...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="secondary-btn" id="update-jira-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Update to JIRA
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
